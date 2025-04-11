@@ -27,14 +27,14 @@ class Library:
             return "No books in library"
         
     # Book Operations: 1. Add a New Book
-    def add_book(self, title, author, genre, publication_date): 
+    def add_book(self, title, author, isbn, publication_date): 
         conn = connect_database()
         if conn is not None:
             try:
                 cursor = conn.cursor()
-                new_book = Book(title, author, genre, publication_date)
-                query = "INSERT INTO Books (title, author_id, publication_date) VALUES (%s, %s, %s)"
-                cursor.execute(query(Book.title, Book.author, Book.publication_date))
+                new_book = Book(title, author, isbn, publication_date)
+                query = "INSERT INTO Books (title, author_id, isbn, publication_date) VALUES (%s, %s, %s, %s)"
+                cursor.execute(query, (title, author, isbn, publication_date))
                 conn.commit()
             finally:
                 cursor.close()
@@ -103,8 +103,18 @@ class Library:
             print(f"Name: {author.name}, Biography: {author.biography}")
         return True
     
-    def add_author(self, author):
-        self.authors.append(author)
+    def add_author(self, name, biography):
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                new_author = Author(name, biography)
+                query = "INSERT INTO authors (name, biography) VALUES (%s, %s)"
+                cursor.execute(query, (name, biography))
+                conn.commit()
+            finally:
+                cursor.close()
+                conn.close()
     
     def find_author(self, name):
         for author in self.authors:

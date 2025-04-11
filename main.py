@@ -7,12 +7,12 @@ def main():
 
     my_library = Library("The Library")
 
-    author = Author("Paulo Coelho", "Paulo Coelho is a Brazilian author who has published many books.")
-    # Add defaults
-    my_library.add_author(author)
-    my_library.add_user("Alice", "1234")
-    my_library.add_user("Bob", "5678")
-    my_library.add_book("The Alchemist", "Paulo Coelho", "Fiction", 1988)
+    # author = Author("Paulo Coelho", "Paulo Coelho is a Brazilian author who has published many books.")
+    # # Add defaults
+    # my_library.add_author(author)
+    # my_library.add_user("Alice", "1234")
+    # my_library.add_user("Bob", "5678")
+    # my_library.add_book("The Alchemist", "Paulo Coelho", "Fiction", 1988)
 
 
     while True:
@@ -30,9 +30,10 @@ def main():
                     if choice == '1':
                         title = input("Enter title: ")
                         author = input("Enter author ID: ")
+                        isbn = input("Enter ISBN: ")
                         # genre = input("Enter genre: ")
                         publication_date = input("Enter publication date: ")
-                        # my_library.add_book(title, author, genre, publication_date)
+                        my_library.add_book(title, author, isbn, publication_date)
                         print(f"Book '{title}' has been added!")
                         
                     elif choice == '2':
