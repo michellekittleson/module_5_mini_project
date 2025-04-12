@@ -32,7 +32,7 @@ class Library:
         if conn is not None:
             try:
                 cursor = conn.cursor()
-                new_book = Book(title, author, isbn, publication_date)
+                # new_book = Book(title, author, isbn, publication_date)
                 query = "INSERT INTO Books (title, author_id, isbn, publication_date) VALUES (%s, %s, %s, %s)"
                 cursor.execute(query, (title, author, isbn, publication_date))
                 conn.commit()
@@ -78,16 +78,34 @@ class Library:
         return None
 
     def add_user(self, name, library_id):
-        new_user = User(name, library_id)
-        self.users.append(new_user)
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                query = "INSERT INTO Users (name, library_id) VALUES (%s, %s)"
+                cursor.execute(query, (name, library_id))
+                conn.commit()
+            finally:
+                cursor.close()
+                conn.close()
     
     def get_user(self, name):
-        for user in self.users:
-            if name == user.get_name():
-                print("Found user")
-                return user
-        print("No user found")    
-        return None # Return None if user not found
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                query = "SELECT * from Users where name = %s"
+                cursor.execute(query, name)
+                conn.commit()
+            finally:
+                cursor.close()
+                conn.close()
+        # for user in self.users:
+        #     if name == user.get_name():
+        #         print("Found user")
+        #         return user
+        # print("No user found")    
+        # return None # Return None if user not found
     
     def get_users(self):
         for user in self.users:

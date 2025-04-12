@@ -78,14 +78,11 @@ def main():
                         name = input("Enter user name: ")
                         library_id = input("Enter library id: ") 
                         my_library.add_user(name, library_id)
+                        print(f"User '{name}' has been added!")
 
                     elif choice == '2':
                         name = input("Enter user name: ")
-                        user = my_library.get_user(name) # Retrieve user object
-                        if user:
-                            print(user.name)
-                        else:
-                            print("User not found.")
+                        my_library.get_user(name)
 
                     elif choice == '3':
                         my_library.get_users()
@@ -101,8 +98,8 @@ def main():
                     if choice == '1':
                         name = input("Enter author name: ")
                         biography = input("Enter biography: ")
-                        new_author = Author(name, biography)
-                        my_library.add_author(new_author)
+                        # new_author = Author(name, biography)
+                        my_library.add_author(name, biography)
                         print(f"Author {name} has been added!")
 
                     elif choice == '2':
