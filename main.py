@@ -62,9 +62,10 @@ def main():
                             print(f"Book '{title}' not found in the library.")
 
                     elif choice == '5':
-                        library_books = my_library.get_books()
-                        for book in library_books:
-                            print(f"Title: {book.title}, Author: {book.author}, Genre: {book.genre}, Publication Date: {book.publication_date}")
+                        my_library.get_books()
+                        # library_books = my_library.get_books()
+                        # for book in library_books:
+                        #     print(f"Title: {book.title}, Author: {book.author}, Genre: {book.genre}, Publication Date: {book.publication_date}")
 
                 except Exception as e:
                     print(f"An error occurred: {e}")
@@ -104,11 +105,10 @@ def main():
 
                     elif choice == '2':
                         name = input("Enter author's name to search: ")
-                        author = my_library.find_author(name)
-                        print(author.view_author_details())
+                        my_library.view_author_details(name)
 
                     elif choice == '3':
-                        all_authors = my_library.display_authors()
+                        my_library.display_authors()
 
                 except Exception as e:
                     print(f"An error occurred: {e}")

@@ -20,11 +20,23 @@ class Library:
         self.authors = []
         self.users = []
 
-    def get_books(self): 
-        if self.books:
-            return self.books
-        else:
-            return "No books in library"
+    def get_books(self):
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                query = "SELECT * from Books"
+                cursor.execute(query)
+                for row in cursor.fetchall():
+                    print(row)
+
+            finally:
+                cursor.close()
+                conn.close() 
+        # if self.books:
+        #     return self.books
+        # else:
+        #     return "No books in library"
         
     # Book Operations: 1. Add a New Book
     def add_book(self, title, author, isbn, publication_date): 
@@ -65,11 +77,18 @@ class Library:
             return "Book not found."
 
     def search_title(self, title):
-        for book in self.books:
-            if book.title == title:
-                return True
-        else:
-            return False
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor(buffered=True)
+                query = "SELECT * from Books where title = %s"
+                cursor.execute(query, (title,))
+                book = cursor.fetchone()
+                # conn.commit()
+                print(f"Book: {book[1]}, ID: {book[0]}, ISBN: {book[3]}, Publication Date: {book[4]}")
+            finally:
+                cursor.close()
+                conn.close()
     
     def get_book(self, title):
         for book in self.books:
@@ -93,10 +112,12 @@ class Library:
         conn = connect_database()
         if conn is not None:
             try:
-                cursor = conn.cursor()
+                cursor = conn.cursor(buffered=True)
                 query = "SELECT * from Users where name = %s"
-                cursor.execute(query, name)
-                conn.commit()
+                cursor.execute(query, (name,))
+                user = cursor.fetchone()
+                # conn.commit()
+                print(f"User: {user[1]}, ID: {user[0]}, Library ID: {user[2]}")
             finally:
                 cursor.close()
                 conn.close()
@@ -107,19 +128,57 @@ class Library:
         # print("No user found")    
         # return None # Return None if user not found
     
+    def view_author_details(self, name):
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor(buffered=True)
+                query = "SELECT * from Authors where name = %s"
+                cursor.execute(query, (name,))
+                author = cursor.fetchone()
+                # conn.commit()
+                print(f"Author: {author[1]}, ID: {author[0]}, Biography: {author[2]}")
+            finally:
+                cursor.close()
+                conn.close()
+    
     def get_users(self):
-        for user in self.users:
-            print(f"User name: {user.name}, Library ID: {user.get_library_id()}")
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                query = "SELECT * from Users"
+                cursor.execute(query)
+                for row in cursor.fetchall():
+                    print(row)
+
+            finally:
+                cursor.close()
+                conn.close()
+        # for user in self.users:
+        #     print(f"User name: {user.name}, Library ID: {user.get_library_id()}")
     
     def display_users(self):
         for user in self.users:
             print(user)
     
     def display_authors(self):
-        for author in self.authors:
-            # print(author)
-            print(f"Name: {author.name}, Biography: {author.biography}")
-        return True
+        conn = connect_database()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                query = "SELECT * from Authors"
+                cursor.execute(query)
+                for row in cursor.fetchall():
+                    print(row)
+
+            finally:
+                cursor.close()
+                conn.close()
+        # for author in self.authors:
+        #     # print(author)
+        #     print(f"Name: {author.name}, Biography: {author.biography}")
+        # return True
     
     def add_author(self, name, biography):
         conn = connect_database()
